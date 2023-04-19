@@ -1,38 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora Nikkei50</title>
-    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   </head>
   <body>
-    <h1>Calculadora Nikkei50</h1>
-    <form>
-      <label for="valor-real">Valor em Dolar:</label>
-      <input type="number" id="valor-real" name="valor-real" step="0.01" placeholder="$ 0,00" onfocus="this.value = parseFloat(this.value).toFixed(2)">
-      <br>
-      <label for="porcentagem">Ganho médio (%):</label>
-      <input type="number" id="porcentagem" placeholder="0,00%" name="porcentagem" step="0.01" required>
-      <br>
-      <label for="num-resultados">Operações:</label>
-      <input type="number" id="num-resultados" name="num-resultados" value="1" min="1" max="100" required>
-      <br>
-      <button type="button" onclick="calcular()">Calcular</button>
-    </form>
-    <div id="resultado"></div>
+    <div class="container mt-4 text-center">
+      <h1>Calculadora Nikkei50 🚀</h1>
+      <form>
+        <div class="form-group mt-5">
+          <label for="valor-real">Valor em Dolar</label>
+          <input type="text" class="form-control" id="valor-real" placeholder="$0,00" />
+        </div>
+        <div class="form-group">
+          <label for="porcentagem">Ganho médio %</label>
+          <input type="text" class="form-control" id="porcentagem" placeholder="0,00" />
+        </div>
+        <div class="form-group">
+          <label for="num-resultados">Operações</label>
+          <input type="number" class="form-control" id="num-resultados" value="5" />
+        </div>
+        <button type="button" class="btn btn-primary btn-block" onclick="calcular()">Calcular</button>
+      </form>
+      <div class="mt-4">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Quant.</th>
+                <th>Valores</th>
+              </tr>
+            </thead>
+            <tbody id="resultado"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <script>
       function calcular() {
         const valorReal = parseFloat(document.getElementById("valor-real").value.replace(",", "."));
-        const porcentagem = parseFloat(document.getElementById("porcentagem").value);
+        const porcentagem = parseFloat(document.getElementById("porcentagem").value.replace(",", "."));
         const numResultados = parseInt(document.getElementById("num-resultados").value);
-        let resultado = valorReal * (1 + porcentagem / 100);
-        let resultadoStr = `Resultado operações:<br>1. $ ${resultado.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
-        for (let i = 2; i <= numResultados; i++) {
-          resultado *= (1 + porcentagem / 100);
-          resultadoStr += `<br>${i}. $ ${resultado.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+
+        let resultado = "";
+        for (let i = 1; i <= numResultados; i++) {
+          const valorCalculado = valorReal * (1 + (porcentagem / 100)) ** i;
+          resultado +=
+            "<tr><td>" + i + "</td><td>$" + valorCalculado.toFixed(2) + "</td></tr>";
         }
-        document.getElementById("resultado").innerHTML = resultadoStr;
+
+        document.getElementById("resultado").innerHTML = resultado;
       }
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </body>
 </html>
